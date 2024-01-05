@@ -108,14 +108,81 @@
                 }
             }
         },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login for user",
+                "description": "Login api for users",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
         "/api/course": {
             "get": {
                 "tags": [
                     "Course"
                 ],
-                "summary": "Login for user",
-                "description": "Login api for users",
+                "summary": "Course list",
+                "description": "List Courses",
                 "operationId": "courseGet",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Course"
+                ],
+                "summary": "Post course data",
+                "description": "Insert course data",
+                "operationId": "postCourse",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "fee",
+                                    "max_student",
+                                    "total_duration_days"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "fee": {
+                                        "type": "string"
+                                    },
+                                    "max_student": {
+                                        "type": "string"
+                                    },
+                                    "total_duration_days": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "successful operation"

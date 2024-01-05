@@ -135,6 +135,24 @@ class AuthController extends Controller
         return Auth::user();
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/logout",
+     *     tags={"Authentication"},
+     *     summary="Login for user",
+     *     description="Login api for users",
+     *     operationId="logout",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid status value"
+     *     )
+     * )
+     */
     public function logout()
     {
         $cookie = Cookie::forget('jwt');

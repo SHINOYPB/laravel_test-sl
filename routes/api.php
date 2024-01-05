@@ -26,4 +26,5 @@ Route::group([
     Route::get('user', [AuthController::class, 'user']);
 
     Route::get('course', [CourseController::class, 'index']);
+    Route::post('course', [CourseController::class, 'create']);
 });
