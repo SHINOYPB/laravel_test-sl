@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,7 @@ Route::group([
 
     Route::get('course', [CourseController::class, 'index']);
     Route::post('course', [CourseController::class, 'create']);
+
+    Route::get('subject', [SubjectController::class, 'index']);
+    Route::post('subject', [SubjectController::class, 'create']);
 });

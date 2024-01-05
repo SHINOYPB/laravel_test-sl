@@ -192,6 +192,65 @@
                     }
                 }
             }
+        },
+        "/api/subject": {
+            "get": {
+                "tags": [
+                    "Subject"
+                ],
+                "summary": "Subject list",
+                "description": "List Subject",
+                "operationId": "subjectGet",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subject"
+                ],
+                "summary": "Post Subject data",
+                "description": "Insert Subject data",
+                "operationId": "SubjectPost",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "course_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "course_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
         }
     }
 }
