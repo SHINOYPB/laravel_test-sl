@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -24,10 +25,13 @@ class AuthController extends Controller
      *         @OA\MediaType(
      *             mediaType="application/x-www-form-urlencoded",
      *             @OA\Schema(
-     *                 required={"name","email","password"},
+     *                 required={"name","email","password","dob","gender","mobile"},
      *                 @OA\Property(property="name",type="string"),
      *                 @OA\Property(property="email", type="string"),
-     *                 @OA\Property(property="password", type="string")
+     *                 @OA\Property(property="password", type="string"),
+     *                 @OA\Property(property="dob", type="string",description="Ex. 27-07-2022(d-m-Y)"),
+     *                 @OA\Property(property="gender", type="string"),
+     *                 @OA\Property(property="mobile", type="string")
      *             )
      *         )
      *     ),
@@ -43,14 +47,27 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        return User::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => Hash::make($request->password)
-        ]);
+        $rules = array(
+            'name' => 'required',
+            'email' => 'required',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $validator->errors();
+        } else {
+
+            return User::create([
+                "name" => $request->name,
+                "email" => $request->email,
+                "password" => Hash::make($request->password),
+                "dob" => $request->dob,
+                "gender" => $request->gender,
+                "mobile" => $request->mobile,
+            ]);
+        }
     }
 
-     /**
+    /**
      * @OA\Post(
      *     path="/api/login",
      *     tags={"Authentication"},
@@ -79,21 +96,38 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only("email", "password"))) {
+
+        $rules = array(
+            'password' => 'required',
+            'email' => 'required|email',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $validator->errors();
+        } else {
+
+            if (!Auth::attempt($request->only("email", "password"))) {
+                return response([
+                    'message' => 'Invalid Credentials!'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            $user = Auth::user();
+
+            $token = $user->createToken('token')->plainTextToken;
+
+            $data = [];
+            $data['access_token'] = $token;
+            $data['token_type'] = 'bearer';
+            $data['user'] = $user;
+
+            $cookie = cookie('jwt', $token, 60 * 24);
+
             return response([
-                'message' => 'Invalid Credentials!'
-            ], Response::HTTP_UNAUTHORIZED);
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ])->withCookie($cookie);
         }
-        $user = Auth::user();
-
-        $token = $user->createToken('token')->plainTextToken;
-
-        $cookie = cookie('jwt', $token, 60 * 24);
-
-        return response([
-            'message' => 'success',
-            'token' => $token
-        ])->withCookie($cookie);
     }
 
     public function user()

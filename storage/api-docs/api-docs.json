@@ -28,7 +28,10 @@
                                 "required": [
                                     "name",
                                     "email",
-                                    "password"
+                                    "password",
+                                    "dob",
+                                    "gender",
+                                    "mobile"
                                 ],
                                 "properties": {
                                     "name": {
@@ -38,6 +41,16 @@
                                         "type": "string"
                                     },
                                     "password": {
+                                        "type": "string"
+                                    },
+                                    "dob": {
+                                        "description": "Ex. 27-07-2022(d-m-Y)",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    },
+                                    "mobile": {
                                         "type": "string"
                                     }
                                 },
