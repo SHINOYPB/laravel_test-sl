@@ -107,6 +107,24 @@
                     }
                 }
             }
+        },
+        "/api/course": {
+            "get": {
+                "tags": [
+                    "Course"
+                ],
+                "summary": "Login for user",
+                "description": "Login api for users",
+                "operationId": "courseGet",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
         }
     }
 }
